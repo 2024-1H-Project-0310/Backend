@@ -35,6 +35,11 @@ public interface MeetingRepository extends PagingAndSortingRepository<Meeting, L
             nativeQuery = true)
     Page<Meeting> findMeetingByDistance(@Param("point")Point point, Pageable pageable);
 
+    @Query(value = "SELECT * FROM meeting WHERE end_time IS NULL ORDER BY ST_Distance_Sphere(location_point, :point) ASC",
+            countQuery = "SELECT count(*) FROM meeting WHERE end_time IS NULL",
+            nativeQuery = true)
+    Page<Meeting> findAllMeetingByDistance(@Param("point")Point point, Pageable pageable);
+
     @Query(value = "SELECT * FROM meeting WHERE Category_id = :category AND end_time IS NULL AND ST_Distance_Sphere(location_point, :point) <= 1500 ORDER BY ST_Distance_Sphere(location_point, :point) ASC",
             countQuery = "SELECT count(*) FROM meeting WHERE Category_id = :category AND end_time IS NULL",
             nativeQuery = true)

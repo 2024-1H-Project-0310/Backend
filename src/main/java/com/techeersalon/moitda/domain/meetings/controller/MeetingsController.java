@@ -65,11 +65,20 @@ public class MeetingsController {
             @RequestParam double longitude,
             Pageable pageable){
         PointMapper pointMapper = PointMapper.from(latitude, longitude);
-        //Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Order.desc("createAt")));
         GetSearchPageRes response= meetingService.getMeetingsNearLocation(pointMapper, pageable);
         return ResponseEntity.ok(SuccessResponse.of(MEETING_PAGING_GET_SUCCESS, response));
     }
-    //@PageableDefault(sort = "createAt", direction = Sort.Direction.ASC,page = 0, size = 10)Pageable pageable)
+
+    @Operation(summary = "전체 모임 리스트 조회", description = "전체 모임 리스트 조회")
+    @GetMapping("/search/all")
+    public ResponseEntity<SuccessResponse> getAllMeetings(
+            @RequestParam double latitude,
+            @RequestParam double longitude,
+            Pageable pageable){
+        PointMapper pointMapper = PointMapper.from(latitude, longitude);
+        GetSearchPageRes response= meetingService.getAllMeetings(pointMapper, pageable);
+        return ResponseEntity.ok(SuccessResponse.of(MEETING_PAGING_GET_SUCCESS, response));
+    }
 
     @Operation(summary = "categoryNearMeetingsPage", description = "카테고리 모임 리스트 조회")
     @GetMapping("/search/category/{categoryId}")
@@ -79,7 +88,6 @@ public class MeetingsController {
             @RequestParam double longitude,
             Pageable pageable){
         PointMapper pointMapper = PointMapper.from(latitude, longitude);
-        //Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Order.desc("createAt")));
         GetSearchPageRes response= meetingService.getMeetingsCategory(pointMapper, categoryId,pageable);
         return ResponseEntity.ok(SuccessResponse.of(MEETING_PAGING_GET_SUCCESS, response));
     }
@@ -105,7 +113,6 @@ public class MeetingsController {
             @RequestParam double longitude,
             Pageable pageable){
         PointMapper pointMapper = PointMapper.from(latitude, longitude);
-        //Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Order.desc("createAt")));
         GetSearchPageRes response= meetingService.searchMeetingsByClosestDeadline(pointMapper, pageable);
         return ResponseEntity.ok(SuccessResponse.of(MEETING_PAGING_GET_SUCCESS, response));
     }
@@ -115,7 +122,6 @@ public class MeetingsController {
     public ResponseEntity<SuccessResponse> deleteMeeting(@PathVariable Long meetingId) {
         meetingService.deleteMeeting(meetingId);
         return ResponseEntity.ok(SuccessResponse.of(MEETING_DELETE_SUCCESS));
-        //return ResponseEntity.status(HttpStatus.NO_CONTENT).body(SuccessResponse.of(MEETING_DELETE_SUCCESS));
     }
 
     @Operation(summary = "endMeeting", description = "모임 종료")

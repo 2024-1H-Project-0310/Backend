@@ -256,6 +256,12 @@ public class MeetingService {
         return transformMeetingsToResponse(meetings);
     }
 
+    public GetSearchPageRes getAllMeetings(PointMapper pointMapper, Pageable pageable) {
+        Point point = mappingPoint(pointMapper);
+        Page<Meeting> meetings = meetingRepository.findAllMeetingByDistance(point, pageable);
+        return transformMeetingsToResponse(meetings);
+    }
+
     public GetSearchPageRes getMeetingsCategory(PointMapper pointMapper, Long categoryId, Pageable pageable) {
         Point point = mappingPoint(pointMapper);
         Page<Meeting> meetings = meetingRepository.findByLocationNearAndCategory(point, categoryId, pageable);

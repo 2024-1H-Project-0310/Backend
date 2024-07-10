@@ -52,7 +52,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                             userRepository.saveAndFlush(user);
                         });
 
-                String redirectUrl = "https://moitda.site/login?accessToken=" + accessToken + "&refreshToken=" + refreshToken;
+                String redirectUrl = "https://moitda.site/auth/login?accessToken=" + accessToken + "&refreshToken=" + refreshToken;
 
                 response.sendRedirect(redirectUrl); // 메인 페이지로 리다이렉트
             }
